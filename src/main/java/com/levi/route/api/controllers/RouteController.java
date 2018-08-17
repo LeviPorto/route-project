@@ -2,9 +2,7 @@ package com.levi.route.api.controllers;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -14,16 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.levi.route.api.dtos.RouteDto;
-import com.levi.route.api.dtos.StopDto;
 import com.levi.route.api.entities.Route;
-import com.levi.route.api.entities.Stop;
 import com.levi.route.api.enums.RouteStatus;
 import com.levi.route.api.enums.StopStatus;
 import com.levi.route.api.response.Response;
@@ -55,14 +52,9 @@ public class RouteController {
 		
 		Route route = this.convertDtoToRoute(routeDto, result);
 
-		if (result.hasErrors()) {
-			log.error("Error validating route: {}", result.getAllErrors());
-			result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
-			return ResponseEntity.badRequest().body(response);
-		}
-
+		route.setRouteStatus(RouteStatus.PENDING);
 		route = this.routeService.persist(route);
-		
+	
 		for(int i = 0;i<route.getPlannedStops().size();++i) {
 			route.getPlannedStops().get(i).setRoute(route);
 			route.getPlannedStops().get(i).setStopStatus(StopStatus.PENDING);
@@ -91,10 +83,17 @@ public class RouteController {
 		return ResponseEntity.ok(response);
 	}
 	
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Response<String>> remove(@PathVariable("id") Long id) {
+		log.info("Removing route ID: {}", id);
+		this.routeService.remove(id);
+		return ResponseEntity.ok(new Response<String>());
+	}
+	
+	
 	private Route convertDtoToRoute(RouteDto routeDto, BindingResult result) throws ParseException {
 		Route route = new Route();
 		
-		route.setRouteStatus(RouteStatus.PENDING);
 		route.setAssignedVehicle(Long.valueOf(routeDto.getAssignedVehicle()));
 		route.setRoutePlan(routeDto.getRoutePlan());
 		route.setPlannedStops(routeDto.getPlannedStops());
@@ -109,7 +108,6 @@ public class RouteController {
 		routeDto.setId(route.getId());
 		routeDto.setPlannedStops(route.getPlannedStops());
 		routeDto.setRoutePlan(route.getRoutePlan());
-		routeDto.setRouteStatus(RouteStatus.PENDING.toString());
 		
 		return routeDto;
 	}

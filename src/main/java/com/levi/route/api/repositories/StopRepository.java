@@ -16,8 +16,8 @@ public interface StopRepository extends JpaRepository<Stop, Long> {
 	
 	@Query(value = "Select * From Stop AS s WHERE s.stop_status = 'FINISHED'"
 			+ " AND DATEDIFF(update_status_finished_date, update_status_progress_date)"
-			+ " IN (SELECT max(DATEDIFF(update_status_finished_date, update_status_progress_date)) "
-			+ "FROM stop GROUP BY id_route)",
+			+ " IN (SELECT max(DATEDIFF(update_status_finished_date, update_status_progress_date))"
+			+ " FROM stop GROUP BY id_route)",
 			nativeQuery = true)
 	List<Stop> findLongerStopByRoute();
 	

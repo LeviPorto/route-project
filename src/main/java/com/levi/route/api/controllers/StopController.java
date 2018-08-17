@@ -3,7 +3,6 @@ package com.levi.route.api.controllers;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -13,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,12 +49,6 @@ public class StopController {
 		
 		Stop stop = this.convertDtoToStop(stopDto, result);
 
-		if (result.hasErrors()) {
-			log.error("Error validating stop: {}", result.getAllErrors());
-			result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
-			return ResponseEntity.badRequest().body(response);
-		}
-
 		if(stop.getStopStatus() == null) {
 			stop.setStopStatus(StopStatus.PENDING);
 		}
@@ -78,6 +73,13 @@ public class StopController {
 	    
 	    response.setData(stopDtos);
 		return ResponseEntity.ok(response);
+	}
+	
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Response<String>> remove(@PathVariable("id") Long id) {
+		log.info("Removing stop ID: {}", id);
+		this.stopService.remove(id);
+		return ResponseEntity.ok(new Response<String>());
 	}
 	
 	@GetMapping(value = "/LongerStopByRoute")

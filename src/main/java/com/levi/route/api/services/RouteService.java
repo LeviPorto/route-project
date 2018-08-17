@@ -15,4 +15,5 @@ public interface RouteService {
 	
 	List<Route> findRoutesByStatusInDate(@Param("date") String date);
 	
+	void remove(Long id);
 }

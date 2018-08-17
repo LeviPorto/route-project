@@ -12,4 +12,6 @@ public interface StopService {
 	
 	List<Stop> findLongerStopByRoute();
 	
+	void remove(Long id);
+	
 }

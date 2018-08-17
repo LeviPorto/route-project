@@ -12,6 +12,18 @@ public class RouteDto {
 	private String routeStatus;
 	private List<Stop> plannedStops;
 	
+	public RouteDto(Long id, String routePlan, String assignedVehicle, String routeStatus) {
+		super();
+		this.id = id;
+		this.routePlan = routePlan;
+		this.assignedVehicle = assignedVehicle;
+		this.routeStatus = routeStatus;
+	}
+	
+	public RouteDto() {
+		
+	}
+
 	public Long getId() {
 		return id;
 	}

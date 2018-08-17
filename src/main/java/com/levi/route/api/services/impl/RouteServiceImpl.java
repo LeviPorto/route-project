@@ -1,6 +1,5 @@
 package com.levi.route.api.services.impl;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +36,12 @@ public class RouteServiceImpl implements RouteService {
 	public List<Route> findRoutesByStatusInDate(String date) {
 		log.info("Finding routes by status in {}", date);
 		return this.routeRepository.findRoutesByStatusInDate(date);
+	}
+	
+	@Override
+	public void remove(Long id) {
+		log.info("Removing route ID {}", id);
+		this.routeRepository.deleteById(id);
 	}
 
 }

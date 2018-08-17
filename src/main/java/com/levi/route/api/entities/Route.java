@@ -44,7 +44,7 @@ public class Route {
 		this.id = id;
 	}
 	
-	@Column(name = "assigned_vehicle", nullable = false)
+	@Column(name = "assigned_vehicle", nullable = true)
 	public Long getAssignedVehicle() {
 		return assignedVehicle;
 	}
@@ -54,7 +54,7 @@ public class Route {
 	}
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "route_status", nullable = true)
+	@Column(name = "route_status", nullable = false)
 	public RouteStatus getRouteStatus() {
 		return routeStatus;
 	}

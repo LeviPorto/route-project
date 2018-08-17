@@ -91,7 +91,7 @@ public class Stop {
 	}
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "stop_status", nullable = true)
+	@Column(name = "stop_status", nullable = false)
 	public StopStatus getStopStatus() {
 		return stopStatus;
 	}

@@ -126,8 +126,6 @@ private static final Logger log = LoggerFactory.getLogger(RouteController.class)
 			if(DateUtil.getDateDiff(penultimateCoordinate.getInstant(),
 					lastCoordinate.getInstant(), TimeUnit.MINUTES) <= 5){
 				
-				System.out.println(DateUtil.getDateDiff(lastCoordinate.getInstant(), 
-					penultimateCoordinate.getInstant(), TimeUnit.MINUTES));
 				stop.setStopStatus(StopStatus.PROGRESS);
 				stop.setUpdateStatusProgressDate(new Date());
 				stopService.persist(stop);
@@ -146,6 +144,7 @@ private static final Logger log = LoggerFactory.getLogger(RouteController.class)
 	
 	private CoordinateDto convertCoordinateToDto(Coordinate coordinate) {
 		CoordinateDto coordinateDto = new CoordinateDto();
+		
 		coordinateDto.setId(coordinate.getId());
 		coordinateDto.setInstant(String.valueOf(coordinate.getInstant()));
 		coordinateDto.setLat(String.valueOf(coordinate.getLat()));

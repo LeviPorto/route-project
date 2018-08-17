@@ -37,4 +37,12 @@ public class StopServiceImpl implements StopService {
 		return this.stopRepository.findLongerStopByRoute();
 	}
 
+	@Override
+	public void remove(Long id) {
+		log.info("Removing stop ID {}", id);
+		this.stopRepository.deleteById(id);
+	}
+
+	
+
 }
