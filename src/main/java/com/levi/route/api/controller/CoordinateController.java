@@ -33,7 +33,7 @@ private static final Logger log = LoggerFactory.getLogger(RouteController.class)
 	public CoordinateDto create(@Valid @RequestBody CoordinateDto coordinateDto) {
 		log.info("Creating coordinate and process");
 		Coordinate coordinate = coordinateService.persist(Coordinate.fromDto(coordinateDto));
-		processor.processCoordinate(coordinate.getVehicleId());
+		processor.processCoordinate(coordinate);
 		return coordinateDto;
 	}
 	

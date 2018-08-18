@@ -5,6 +5,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,32 +34,24 @@ public class CoordinateProcessorService {
     private CoordinateService coordinateService;
 
     @Async
-    public void processCoordinate(Long vehicleId) {
-    	List<Coordinate> coordinates = this.coordinateService.findLastTop2ByVehicle(vehicleId);
+    public void processCoordinate(Coordinate coordinate) {
+    	Optional<Coordinate> previousCoordinate = coordinateService.findPreviousCoordinate(coordinate.getVehicleId(), coordinate.getInstant());
+    	
     	List<Route> routes = this.routeService.findPendingOrProgress();
-    	
-    	Coordinate lastCoordinate = coordinates.get(0);
-    	Coordinate penultimateCoordinate;
-    	if(coordinates.size() == 2) {
-    		penultimateCoordinate = coordinates.get(1);
-    	} else {
-    		penultimateCoordinate = new Coordinate();
-    	}
-    	
 		for(int i = 0;i<routes.size();++i) {
 			Route route = routes.get(i);
 			
-			if(lastCoordinate.getVehicleId().equals(route.getAssignedVehicle())) {
-				changeRouteStatusToProgress(lastCoordinate, route);
+			if(coordinate.getVehicleId().equals(route.getAssignedVehicle())) {
+				changeRouteStatusToProgress(coordinate, route);
 				
 				int countOfFinishedStopByRoute = 0;
 				for(int y = 0;y<route.getPlannedStops().size();++y) {
 					Stop stop = route.getPlannedStops().get(y);
 					
-					if(penultimateCoordinate.getInstant() != null) {
-						changeStopStatusToProgress(lastCoordinate, penultimateCoordinate, stop);
+					if(previousCoordinate.isPresent()) {
+						changeStopStatusToProgress(coordinate, previousCoordinate.get(), stop);
 					}
-					changeStopStatusToFinished(lastCoordinate, stop);
+					changeStopStatusToFinished(coordinate, stop);
 					
 					if(stop.getStopStatus().toString().equals("FINISHED")) {
 						countOfFinishedStopByRoute++;

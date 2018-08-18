@@ -1,6 +1,8 @@
 package com.levi.route.api.service;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +24,11 @@ public class CoordinateService {
 	public List<Coordinate> findLastTop2ByVehicle(Long vehicleId) {
 		log.info("Finding coordinates");
 		return this.coordinateRepository.findLastTop2ByVehicle(vehicleId);
+	}
+	
+	public Optional<Coordinate> findPreviousCoordinate(Long vehicleId, Instant instant) {
+		log.info("Finding coordinates");
+		return this.coordinateRepository.findPreviousCoordinate(vehicleId, instant);
 	}
 	
 	public Coordinate persist(Coordinate coordinate) {
