@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.levi.route.api.security.JwtAuthenticationEntryPoint;
-import com.levi.route.api.security.filters.JwtAuthenticationTokenFilter;
+import com.levi.route.api.security.filter.JwtAuthenticationTokenFilter;
 
 
 @Configuration
