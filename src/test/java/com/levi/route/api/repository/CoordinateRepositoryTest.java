@@ -1,9 +1,10 @@
-package com.levi.routereceivecoordinateapi.repositories;
+package com.levi.route.api.repository;
 
 import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -11,8 +12,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -39,12 +38,10 @@ public class CoordinateRepositoryTest {
 		this.coordinateRepository.deleteAll();
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Test
 	public void findTop2ByVehicleId() {
-		PageRequest page = new PageRequest(0, 2);
-		Page<Coordinate> routes = coordinateRepository.findTop2ByVehicleId(Long.valueOf(12345), page);
-		assertEquals(2, routes.getTotalElements());
+		List<Coordinate> routes = coordinateRepository.findLastTop2ByVehicle(Long.valueOf(12345));
+		assertEquals(2, routes.size());
 	}
 	
 	private Coordinate returnCoordinateToTest() throws ParseException {

@@ -3,21 +3,22 @@ package com.levi.route.api.dto;
 import java.util.List;
 
 import com.levi.route.api.entity.Stop;
+import com.levi.route.api.enun.RouteStatus;
 
 public class RouteDto {
 
 	private Long id;
 	private String routePlan;
 	private String assignedVehicle;
-	private String routeStatus;
+	private RouteStatus status;
 	private List<Stop> plannedStops;
 	
-	public RouteDto(Long id, String routePlan, String assignedVehicle, String routeStatus) {
+	public RouteDto(Long id, String routePlan, String assignedVehicle, RouteStatus status) {
 		super();
 		this.id = id;
 		this.routePlan = routePlan;
 		this.assignedVehicle = assignedVehicle;
-		this.routeStatus = routeStatus;
+		this.status = status;
 	}
 	
 	public RouteDto() {
@@ -48,12 +49,12 @@ public class RouteDto {
 		this.assignedVehicle = assignedVehicle;
 	}
 
-	public String getRouteStatus() {
-		return routeStatus;
+	public RouteStatus getStatus() {
+		return status;
 	}
 
-	public void setRouteStatus(String routeStatus) {
-		this.routeStatus = routeStatus;
+	public void setStatus(RouteStatus status) {
+		this.status = status;
 	}
 
 	public List<Stop> getPlannedStops() {

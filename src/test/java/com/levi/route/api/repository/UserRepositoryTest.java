@@ -1,4 +1,4 @@
-package com.levi.routereceivecoordinateapi.repositories;
+package com.levi.route.api.repository;
 
 import static org.junit.Assert.assertEquals;
 
@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.levi.route.api.RouteProjectApplication;
 import com.levi.route.api.entity.User;
-import com.levi.route.api.enun.RoleEnum;
+import com.levi.route.api.enun.Role;
 import com.levi.route.api.repository.UserRepository;
 
 @RunWith(SpringRunner.class)
@@ -31,7 +31,7 @@ public class UserRepositoryTest {
 		User user = new User();
 		user.setUsername("Username Test");
 		user.setPassword("123456");
-		user.setRole(RoleEnum.ROLE_ADMIN);
+		user.setRole(Role.ROLE_ADMIN);
 		this.userRepository.save(user);
 	}
 	

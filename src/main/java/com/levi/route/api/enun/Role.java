@@ -1,6 +1,6 @@
 package com.levi.route.api.enun;
 
-public enum RoleEnum {
+public enum Role {
 	ROLE_USER,
 	ROLE_ADMIN
 }

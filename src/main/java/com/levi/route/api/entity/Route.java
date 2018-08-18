@@ -15,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.levi.route.api.enun.RouteStatus;
 
@@ -23,7 +25,7 @@ import com.levi.route.api.enun.RouteStatus;
 public class Route {
 	
 	private Long id;
-	private RouteStatus routeStatus;
+	private RouteStatus status;
 	private Long assignedVehicle;
 	private List<Stop> plannedStops;
 	private String routePlan;
@@ -55,12 +57,12 @@ public class Route {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "route_status", nullable = false)
-	public RouteStatus getRouteStatus() {
-		return routeStatus;
+	public RouteStatus getStatus() {
+		return status;
 	}
 
-	public void setRouteStatus(RouteStatus routeStatus) {
-		this.routeStatus = routeStatus;
+	public void setStatus(RouteStatus status) {
+		this.status = status;
 	}
 
 	@OneToMany(mappedBy = "route", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -83,6 +85,7 @@ public class Route {
 	}
 
 	@Column(name = "update_status_progress_date", nullable = true)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date getUpdateStatusProgressDate() {
 		return updateStatusProgressDate;
 	}
@@ -92,6 +95,7 @@ public class Route {
 	}
 
 	@Column(name = "update_status_finished_date", nullable = true)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date getUpdateStatusFinishedDate() {
 		return updateStatusFinishedDate;
 	}

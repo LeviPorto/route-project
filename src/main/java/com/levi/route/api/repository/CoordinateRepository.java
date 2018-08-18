@@ -1,7 +1,7 @@
 package com.levi.route.api.repository;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,9 +12,7 @@ import com.levi.route.api.entity.Coordinate;
 @Transactional(readOnly = true)
 public interface CoordinateRepository extends JpaRepository<Coordinate, Long>  {
 
-	@Query("SELECT c FROM Coordinate c WHERE c.vehicleId = :vehicleId")
-	Page<Coordinate> findTop2ByVehicleId(@Param("vehicleId") Long vehicleId,  Pageable pageable);
-	
-	
+	@Query(value = "SELECT * FROM Coordinate c WHERE c.vehicle_id = :vehicle_id ORDER BY c.id DESC LIMIT 2", nativeQuery = true)
+	List<Coordinate> findLastTop2ByVehicle(@Param("vehicle_id") Long vehicleId);
 	
 }

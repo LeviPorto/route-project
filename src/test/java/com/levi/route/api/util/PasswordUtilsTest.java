@@ -1,4 +1,4 @@
-package com.levi.routereceivecoordinate.api.utils;
+package com.levi.route.api.util;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;

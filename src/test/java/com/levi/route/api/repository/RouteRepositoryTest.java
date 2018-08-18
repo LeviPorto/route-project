@@ -1,4 +1,4 @@
-package com.levi.routereceivecoordinateapi.repositories;
+package com.levi.route.api.repository;
 
 import static org.junit.Assert.assertEquals;
 
@@ -32,7 +32,7 @@ public class RouteRepositoryTest {
 	public void setUp() throws Exception {
 		this.routeRepository.save(returnRouteToTest());
 		Route finishedRoute = returnRouteToTest();
-		finishedRoute.setRouteStatus(RouteStatus.FINISHED);
+		finishedRoute.setStatus(RouteStatus.FINISHED);
 		finishedRoute.setAssignedVehicle(Long.valueOf(54321));
 		this.routeRepository.save(finishedRoute);
 	}
@@ -44,7 +44,7 @@ public class RouteRepositoryTest {
 	
 	@Test
 	public void findPendentOrProgressByVehicleId() {
-		List<Route> routes = routeRepository.findPendentOrProgressByVehicleId(Long.valueOf(12345));
+		List<Route> routes = routeRepository.findPendingOrProgress();
 		assertEquals(1, routes.size());
 	}
 	
@@ -52,7 +52,7 @@ public class RouteRepositoryTest {
 		Route route = new Route();
 		route.setAssignedVehicle(Long.valueOf(12345));
 		route.setRoutePlan("A");
-		route.setRouteStatus(RouteStatus.PENDING);
+		route.setStatus(RouteStatus.PENDING);
 		return route;
 	}
 }

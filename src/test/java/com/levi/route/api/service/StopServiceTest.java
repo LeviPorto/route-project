@@ -1,8 +1,9 @@
-package com.levi.routereceivecoordinateapi.services;
+package com.levi.route.api.service;
 
 import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -35,8 +36,8 @@ public class StopServiceTest {
 	@Before
 	public void setUp() throws Exception {
 		BDDMockito.given(this.stopRepository.save(Mockito.any(Stop.class))).willReturn(new Stop());
-		BDDMockito.given(this.stopRepository.findLongerStopByRoute()).willReturn(new ArrayList<Stop>());
-		BDDMockito.given(this.stopRepository.findFinishedStopByRoute(Mockito.anyString())).willReturn(new ArrayList<Stop>());
+		BDDMockito.given(this.stopRepository.findFinishedStopsByRoute(Mockito.any(Date.class), Mockito.anyLong())).willReturn(new ArrayList<Stop>());
+		BDDMockito.given(this.stopRepository.findLongerStopsByRoute(Mockito.anyLong())).willReturn(new ArrayList<Stop>());
 	}
 	
 	@Test
@@ -47,13 +48,13 @@ public class StopServiceTest {
 
 	@Test
 	public void findFinishedStopByRouteTest() {
-		List<Stop> user = this.stopService.findFinishedStopByRoute("date");
+		List<Stop> user = this.stopService.findFinishedStopsByRoute(new Date(), 1L);
 		assertNotNull(user);
 	}
 	
 	@Test
 	public void findLongerStopByRouteTest() {
-		List<Stop> stop = this.stopService.findLongerStopByRoute();
+		List<Stop> stop = this.stopService.findLongerStopsByRoute(1L);
 		assertNotNull(stop);
 	}
 }

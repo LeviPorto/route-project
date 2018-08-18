@@ -1,4 +1,4 @@
-package com.levi.routereceivecoordinateapi.controllers;
+package com.levi.route.api.controller;
 
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,6 @@
 package com.levi.route.api.controller;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.validation.Valid;
 
@@ -13,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.levi.route.api.dto.StopDto;
+import com.levi.route.api.entity.Route;
 import com.levi.route.api.entity.Stop;
 import com.levi.route.api.enun.StopStatus;
 import com.levi.route.api.response.Response;
@@ -57,24 +55,6 @@ public class StopController {
 		return ResponseEntity.ok(response);
 	}
 	
-	@PostMapping(value = "/finishedStopByRoute")
-	public ResponseEntity<Response<List<StopDto>>> findFinishedStopByRoute(@Valid
-			@RequestBody String date)  {
-		
-		log.info("Calculating finished stops by route in: {}", date);
-		Response<List<StopDto>> response = new Response<List<StopDto>>();
-		
-	    List<Stop> stops = stopService.findFinishedStopByRoute(date);
-	    List<StopDto> stopDtos = new ArrayList<>();
-	    
-	    for(int i = 0;i<stops.size();++i) {
-	    	stopDtos.add(convertStopToDto(stops.get(i)));
-	    }
-	    
-	    response.setData(stopDtos);
-		return ResponseEntity.ok(response);
-	}
-	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Response<String>> remove(@PathVariable("id") Long id) {
 		log.info("Removing stop ID: {}", id);
@@ -82,33 +62,16 @@ public class StopController {
 		return ResponseEntity.ok(new Response<String>());
 	}
 	
-	@GetMapping(value = "/LongerStopByRoute")
-	public ResponseEntity<Response<List<StopDto>>> findLongerStopByRoute()  {
-		
-		log.info("Finding longer stop by route {}");
-		Response<List<StopDto>> response = new Response<List<StopDto>>();
-		
-		
-		List<Stop> stops = stopService.findLongerStopByRoute();
-		List<StopDto> stopDtos = new ArrayList<>();
-		
-	    for(int i = 0;i<stops.size();++i) {
-	    	stopDtos.add(convertStopToDto(stops.get(i)));
-	    }
-		
-	    response.setData(stopDtos);
-		return ResponseEntity.ok(response);
-	}
-	
 	private Stop convertDtoToStop(StopDto stopDto, BindingResult result) throws ParseException {
 		Stop stop = new Stop();
-		
+		Route route = new Route();
+		stop.setRoute(route);
 		stop.getRoute().setId(Long.valueOf(stopDto.getRouteId()));
 		stop.setLat(Double.valueOf(stopDto.getLat()));
 		stop.setLng(Double.valueOf(stopDto.getLng()));
 		stop.setDescription(stopDto.getDescription());
 		stop.setDeliveryRadius(Double.valueOf(stopDto.getDeliveryRadius()));
-		stop.setStopStatus(StopStatus.valueOf(stopDto.getStopStatus()));
+		stop.setStopStatus(stopDto.getStatus());
 		
 		return stop;
 	}
@@ -122,7 +85,7 @@ public class StopController {
 		stopDto.setDescription(stop.getDescription());
 		stopDto.setDeliveryRadius(String.valueOf(stop.getDeliveryRadius()));
 		stopDto.setRouteId(String.valueOf(stop.getRoute().getId()));
-		stopDto.setStopStatus(String.valueOf(stop.getStopStatus()));
+		stopDto.setStatus(stop.getStopStatus());
 		
 		
 		return stopDto;

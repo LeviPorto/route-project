@@ -1,4 +1,4 @@
-package com.levi.routereceivecoordinateapi.repositories;
+package com.levi.route.api.repository;
 
 import static org.junit.Assert.assertEquals;
 
@@ -35,10 +35,12 @@ public class StopRepositoryTest {
 	private RouteRepository routeRepository;
 	
 	private static final String UPDATE_FINISHED_DATE = "2002-01-04 08:00:00";
+	private Long idRoute;
 	
 	@Before
 	public void setUp() throws Exception {
 		Route route = this.routeRepository.save(returnRouteToTest());
+		idRoute = route.getId();
 		this.stopRepository.save(returnStopToTest(route));
 		Stop firstStopFinised = returnStopToTest(route);
 		firstStopFinised.setStopStatus(StopStatus.FINISHED);
@@ -56,14 +58,14 @@ public class StopRepositoryTest {
 	}
 	
 	@Test
-	public void findFinishedStopByRouteTest() {
-		List<Stop> stops = stopRepository.findFinishedStopByRoute("2002-01-04 06:00:00");
+	public void findFinishedStopByRouteTest() throws ParseException {
+		List<Stop> stops = stopRepository.findFinishedStopsByRoute(DateUtil.sdf.parse("2002-01-04 06:00:00"), idRoute);
 		assertEquals(1, stops.size());
 	}
 	
 	@Test
 	public void findLongerStopByRouteTest() throws ParseException {
-		List<Stop> stops = stopRepository.findLongerStopByRoute();
+		List<Stop> stops = stopRepository.findLongerStopsByRoute(idRoute);
 		assertEquals(UPDATE_FINISHED_DATE, DateUtil.sdf.format(stops.get(1).getUpdateStatusFinishedDate()));
 	}
 	
@@ -83,7 +85,7 @@ public class StopRepositoryTest {
 		Route route = new Route();
 		route.setAssignedVehicle(Long.valueOf(12345));
 		route.setRoutePlan("A");
-		route.setRouteStatus(RouteStatus.PENDING);
+		route.setStatus(RouteStatus.PENDING);
 		return route;
 	}
 

@@ -7,7 +7,7 @@ public class CoordinateDto {
 	private String lat;
 	private String lng;
 	private String instant;
-	private String vehicleId;
+	private Long vehicleId;
 	
 	public Long getId() {
 		return id;
@@ -41,11 +41,11 @@ public class CoordinateDto {
 		this.instant = instant;
 	}
 
-	public String getVehicleId() {
+	public Long getVehicleId() {
 		return vehicleId;
 	}
 
-	public void setVehicleId(String vehicleId) {
+	public void setVehicleId(Long vehicleId) {
 		this.vehicleId = vehicleId;
 	}
 
@@ -54,6 +54,5 @@ public class CoordinateDto {
 		return "CoordinateDto [id=" + id + ", lat=" + lat + ", lng=" + lng + ", instant=" + instant
 				+ ", vehicleId=" + vehicleId + "]";
 	}
-	
 	
 }

@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.levi.route.api.enun.RoleEnum;
+import com.levi.route.api.enun.Role;
 
 @Entity
 @Table(name = "user")
@@ -18,7 +18,7 @@ public class User {
 	private Long id;
 	private String username;
 	private String password;
-	private RoleEnum role;
+	private Role role;
 	
 	public User() {
 		
@@ -54,11 +54,11 @@ public class User {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "role", nullable = false)
-	public RoleEnum getRole() {
+	public Role getRole() {
 		return role;
 	}
 
-	public void setRole(RoleEnum role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 	

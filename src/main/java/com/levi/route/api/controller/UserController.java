@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.levi.route.api.dto.UserDto;
 import com.levi.route.api.entity.User;
-import com.levi.route.api.enun.RoleEnum;
+import com.levi.route.api.enun.Role;
 import com.levi.route.api.response.Response;
 import com.levi.route.api.service.UserService;
 import com.levi.route.api.util.PasswordUtils;
@@ -52,7 +52,7 @@ public class UserController {
 		User user = new User();
 		user.setUsername(userDto.getUsername());
 		user.setPassword(PasswordUtils.generateBCrypt(userDto.getPassword()));
-		user.setRole(RoleEnum.ROLE_ADMIN);
+		user.setRole(Role.ROLE_ADMIN);
 		return user;
 	}
 

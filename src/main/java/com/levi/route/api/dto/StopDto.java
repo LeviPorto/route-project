@@ -1,5 +1,7 @@
 package com.levi.route.api.dto;
 
+import com.levi.route.api.enun.StopStatus;
+
 public class StopDto {
 
 	private Long id;
@@ -8,7 +10,7 @@ public class StopDto {
 	private String description;
 	private String deliveryRadius;
 	private String routeId;
-	private String stopStatus;
+	private StopStatus status;
 	
 	public Long getId() {
 		return id;
@@ -58,12 +60,12 @@ public class StopDto {
 		this.routeId = routeId;
 	}
 
-	public String getStopStatus() {
-		return stopStatus;
+	public StopStatus getStatus() {
+		return status;
 	}
 
-	public void setStopStatus(String stopStatus) {
-		this.stopStatus = stopStatus;
+	public void setStatus(StopStatus status) {
+		this.status = status;
 	}
 
 	@Override

@@ -1,8 +1,9 @@
-package com.levi.routereceivecoordinateapi.services;
+package com.levi.route.api.service;
 
 import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -35,8 +36,8 @@ public class RouteServiceTest {
 	@Before
 	public void setUp() throws Exception {
 		BDDMockito.given(this.routeRepository.save(Mockito.any(Route.class))).willReturn(new Route());
-		BDDMockito.given(this.routeRepository.findPendentOrProgressByVehicleId(Mockito.anyLong())).willReturn(new ArrayList<Route>());
-		BDDMockito.given(this.routeRepository.findRoutesByStatusInDate(Mockito.anyString())).willReturn(new ArrayList<Route>());
+		BDDMockito.given(this.routeRepository.findPendingOrProgress()).willReturn(new ArrayList<Route>());
+		BDDMockito.given(this.routeRepository.findStatusInDate(Mockito.any(Date.class), Mockito.anyLong())).willReturn(new String());
 	}
 	
 	@Test
@@ -47,13 +48,13 @@ public class RouteServiceTest {
 
 	@Test
 	public void findPendentOrProgressByVehicleIdTest() {
-		List<Route> route = this.routeService.findPendentOrProgressByVehicleId(1L);
+		List<Route> route = this.routeService.findPendingOrProgress();
 		assertNotNull(route);
 	}
 	
 	@Test
 	public void findRoutesByStatusInDateTest() {
-		List<Route> route = this.routeService.findRoutesByStatusInDate("date");
-		assertNotNull(route);
+		String status = this.routeService.findStatusInDate(new Date(), 1L);
+		assertNotNull(status);
 	}
 }

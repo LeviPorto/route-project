@@ -1,4 +1,4 @@
-package com.levi.routereceivecoordinateapi.controllers;
+package com.levi.route.api.controller;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.levi.route.api.RouteProjectApplication;
 import com.levi.route.api.dto.UserDto;
 import com.levi.route.api.entity.User;
-import com.levi.route.api.enun.RoleEnum;
+import com.levi.route.api.enun.Role;
 import com.levi.route.api.service.UserService;
 import com.levi.route.api.util.PasswordUtils;
 
@@ -72,7 +72,7 @@ public class UserControllerTest {
 		user.setId(1L);
 		user.setPassword(PASSWORD);
 		user.setUsername(USERNAME);
-		user.setRole(RoleEnum.ROLE_USER);
+		user.setRole(Role.ROLE_USER);
 		return user;
 	}	
 }

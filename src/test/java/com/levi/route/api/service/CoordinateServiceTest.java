@@ -1,8 +1,9 @@
-package com.levi.routereceivecoordinateapi.services;
+package com.levi.route.api.service;
 
 import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,6 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.levi.route.api.RouteProjectApplication;
 import com.levi.route.api.entity.Coordinate;
+import com.levi.route.api.entity.Route;
 import com.levi.route.api.repository.CoordinateRepository;
 import com.levi.route.api.service.CoordinateService;
 
@@ -37,14 +39,12 @@ public class CoordinateServiceTest {
 	@Before
 	public void setUp() throws Exception {
 		BDDMockito.given(this.coordinateRepository.save(Mockito.any(Coordinate.class))).willReturn(new Coordinate());
-		BDDMockito.given(this.coordinateRepository.findTop2ByVehicleId(Mockito.anyLong(), Mockito.any(PageRequest.class))).willReturn(
-				new PageImpl<Coordinate>(new ArrayList<Coordinate>()));
+		BDDMockito.given(this.coordinateRepository.findLastTop2ByVehicle(Mockito.anyLong())).willReturn(new ArrayList<Coordinate>());
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test
 	public void findTop2ByVehicleIdTest() {
-		Page<Coordinate> coordinates = this.coordinateService.receiveVehicleCoordinates(1L,  new PageRequest(0, 2));
+		List<Coordinate> coordinates = this.coordinateService.findLastTop2ByVehicle(1L);
 		assertNotNull(coordinates);
 	}
 	
