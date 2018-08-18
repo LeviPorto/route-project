@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.After;
 import org.junit.Before;

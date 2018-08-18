@@ -1,6 +1,8 @@
 package com.levi.route.api.service;
 
 import java.text.ParseException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -16,7 +18,6 @@ import com.levi.route.api.enun.RouteStatus;
 import com.levi.route.api.enun.StopStatus;
 import com.levi.route.api.service.RouteService;
 import com.levi.route.api.service.StopService;
-import com.levi.route.api.util.DateUtil;
 import com.levi.route.api.util.HaversinCalculatorUtil;
 
 @Service
@@ -32,7 +33,7 @@ public class CoordinateProcessorService {
     private CoordinateService coordinateService;
 
     @Async
-    public void processCoordinate(Long vehicleId) throws ParseException {
+    public void processCoordinate(Long vehicleId) {
     	List<Coordinate> coordinates = this.coordinateService.findLastTop2ByVehicle(vehicleId);
     	List<Route> routes = this.routeService.findPendingOrProgress();
     	
@@ -76,7 +77,7 @@ public class CoordinateProcessorService {
 			
 			if(!route.getStatus().equals(RouteStatus.FINISHED)) {
 				route.setStatus(RouteStatus.FINISHED);
-				route.setUpdateStatusFinishedDate(new Date());
+				route.setEndDate(Instant.now());
 				routeService.persist(route);
 			}
 			
@@ -89,27 +90,25 @@ public class CoordinateProcessorService {
 			
 			if(!stop.getStopStatus().equals(StopStatus.FINISHED)) {
 				stop.setStopStatus(StopStatus.FINISHED);
-				stop.setUpdateStatusFinishedDate(new Date());
+				stop.setEndDate(Instant.now());
 				stopService.persist(stop);
 			}
 			
 		}
 	}
 
-	private void changeStopStatusToProgress(Coordinate lastCoordinate, Coordinate penultimateCoordinate, Stop stop)
-			throws ParseException {
+	private void changeStopStatusToProgress(Coordinate lastCoordinate, Coordinate penultimateCoordinate, Stop stop) {
 		if((HaversinCalculatorUtil.distanceBetweenTwoPoints(lastCoordinate.getLat(), 
 				lastCoordinate.getLng(),stop.getLat(),stop.getLng()) <= 
 				stop.getDeliveryRadius()) && (HaversinCalculatorUtil.distanceBetweenTwoPoints(penultimateCoordinate.getLat()
 				, penultimateCoordinate.getLng() ,stop.getLat(),stop.getLng()) <= 
 				stop.getDeliveryRadius())){
 			
-			if(DateUtil.getDateDiff(penultimateCoordinate.getInstant(),
-					lastCoordinate.getInstant(), TimeUnit.MINUTES) <= 5){
+			if(Duration.between(penultimateCoordinate.getInstant(),  lastCoordinate.getInstant()).toMinutes() <= 5){
 				
 				if(!stop.getStopStatus().equals(StopStatus.PROGRESS)) {
 					stop.setStopStatus(StopStatus.PROGRESS);
-					stop.setUpdateStatusProgressDate(new Date());
+					stop.setStartDate(Instant.now());
 					stopService.persist(stop);
 				}
 				
@@ -124,7 +123,7 @@ public class CoordinateProcessorService {
 			if(!route.getStatus().equals(RouteStatus.PROGRESS)) {
 
 				route.setStatus(RouteStatus.PROGRESS);
-				route.setUpdateStatusProgressDate(new Date());
+				route.setStartDate(Instant.now());
 				routeService.persist(route);
 				
 			}

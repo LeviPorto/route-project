@@ -87,7 +87,6 @@ public class StopController {
 		stopDto.setRouteId(String.valueOf(stop.getRoute().getId()));
 		stopDto.setStatus(stop.getStopStatus());
 		
-		
 		return stopDto;
 	}
 }

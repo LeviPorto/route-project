@@ -1,6 +1,7 @@
 package com.levi.route.api.controller;
 
 import java.text.ParseException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.levi.route.api.dto.RouteDto;
@@ -113,14 +115,13 @@ public class RouteController {
 	
 	@GetMapping(value = "/finishedStopsByRoute/{routeId}")
 	public ResponseEntity<Response<List<StopDto>>> findFinishedStopByRoute(
-			@ModelAttribute @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") Date date,
-			BindingResult result,
-			@PathVariable Long routeId)  {
+			@PathVariable Long routeId,
+			@RequestParam Instant date)  {
 		
 		log.info("Calculating finished stops by route in: {}", date);
 		Response<List<StopDto>> response = new Response<List<StopDto>>();
 		
-	    List<Stop> stops = stopService.findFinishedStopsByRoute(date, routeId);
+	    List<Stop> stops = stopService.findFinishedStopsByRoute(Date.from(date), routeId);
 	    List<StopDto> stopDtos = new ArrayList<>();
 	    
 	    for(int i = 0;i<stops.size();++i) {

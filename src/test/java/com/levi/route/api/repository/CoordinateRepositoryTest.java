@@ -3,6 +3,7 @@ package com.levi.route.api.repository;
 import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class CoordinateRepositoryTest {
 	
 	private Coordinate returnCoordinateToTest() throws ParseException {
 		Coordinate coordinate = new Coordinate();
-		coordinate.setInstant(new Date());
+		coordinate.setInstant(Instant.now());
 		coordinate.setLat(20.0);
 		coordinate.setLng(20.0);
 		coordinate.setVehicleId(Long.valueOf(12345));

@@ -1,5 +1,6 @@
 package com.levi.route.api.entity;
 
+import java.time.Instant;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -9,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.levi.route.api.dto.CoordinateDto;
+
 @Entity
 @Table(name = "coordinate")
 public class Coordinate {
@@ -16,7 +19,7 @@ public class Coordinate {
 	private Long id;
 	private double lat;
 	private double lng;
-	private Date instant;
+	private Instant instant;
 	private Long vehicleId;
 	
 	public Coordinate() {
@@ -59,13 +62,23 @@ public class Coordinate {
 		this.vehicleId = vehicleId;
 	}
 
-	@Column(name = "instant", nullable = false)
-	public Date getInstant() {
+	public Instant getInstant() {
 		return instant;
 	}
 
-	public void setInstant(Date instant) {
+	public void setInstant(Instant instant) {
 		this.instant = instant;
+	}
+	
+	public static Coordinate fromDto(CoordinateDto coordinateDto) {
+		Coordinate coordinate = new Coordinate();
+		
+		coordinate.setInstant(Instant.now());
+		coordinate.setLat(coordinateDto.getLat());
+		coordinate.setLng(coordinateDto.getLng());
+		coordinate.setVehicleId(coordinateDto.getVehicleId());
+
+		return coordinate;
 	}
 	
 }

@@ -1,43 +1,39 @@
 package com.levi.route.api.dto;
 
+import java.time.Instant;
+
+import javax.validation.constraints.NotNull;
 
 public class CoordinateDto {
 
-	private Long id;
-	private String lat;
-	private String lng;
-	private String instant;
+	private double lat;
+	private double lng;
+	@NotNull
+	private Instant instant;
+	@NotNull
 	private Long vehicleId;
-	
-	public Long getId() {
-		return id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getLat() {
+	public double getLat() {
 		return lat;
 	}
-	
-	public void setLat(String lat) {
+
+	public void setLat(double lat) {
 		this.lat = lat;
 	}
 
-	public String getLng() {
+	public double getLng() {
 		return lng;
 	}
 
-	public void setLng(String lng) {
+	public void setLng(double lng) {
 		this.lng = lng;
 	}
 
-	public String getInstant() {
+	public Instant getInstant() {
 		return instant;
 	}
 
-	public void setInstant(String instant) {
+	public void setInstant(Instant instant) {
 		this.instant = instant;
 	}
 
@@ -51,7 +47,7 @@ public class CoordinateDto {
 
 	@Override
 	public String toString() {
-		return "CoordinateDto [id=" + id + ", lat=" + lat + ", lng=" + lng + ", instant=" + instant
+		return "CoordinateDto [lat=" + lat + ", lng=" + lng + ", instant=" + instant
 				+ ", vehicleId=" + vehicleId + "]";
 	}
 	

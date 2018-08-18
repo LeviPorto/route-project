@@ -1,5 +1,6 @@
 package com.levi.route.api.entity;
 
+import java.time.Instant;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -27,8 +28,8 @@ public class Stop {
 	private double deliveryRadius;
 	private Route route;
 	private StopStatus stopStatus;
-	private Date updateStatusProgressDate;
-	private Date updateStatusFinishedDate;
+	private Instant startDate;
+	private Instant endDate;
 	
 	public Stop() {
 		
@@ -100,23 +101,25 @@ public class Stop {
 		this.stopStatus = stopStatus;
 	}
 
-	@Column(name = "update_status_progress_date", nullable = true)
-	public Date getUpdateStatusProgressDate() {
-		return updateStatusProgressDate;
+	@Column(name = "start_date", nullable = true)
+	public Instant getStartDate() {
+		return startDate;
 	}
 
-	public void setUpdateStatusProgressDate(Date updateStatusProgressDate) {
-		this.updateStatusProgressDate = updateStatusProgressDate;
+	public void setStartDate(Instant startDate) {
+		this.startDate = startDate;
 	}
 
-	@Column(name = "update_status_finished_date", nullable = true)
-	public Date getUpdateStatusFinishedDate() {
-		return updateStatusFinishedDate;
+	@Column(name = "end_date", nullable = true)
+	public Instant getEndDate() {
+		return endDate;
 	}
 
-	public void setUpdateStatusFinishedDate(Date updateStatusFinishedDate) {
-		this.updateStatusFinishedDate = updateStatusFinishedDate;
+	public void setEndDate(Instant endDate) {
+		this.endDate = endDate;
 	}
+
+	
 	
 	
 	
