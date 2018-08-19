@@ -1,4 +1,4 @@
-# route-project-v2
+# route-project
 API para controle de rotas
 
 INSTRUÇÕES PARA CONFIGURAR PROJETO
