@@ -1,8 +1,13 @@
 package com.levi.route.api.security.config;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.init.DataSourceInitializer;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,6 +40,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public PasswordEncoder passwordEncoder() {
 	    return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	}
+	
+	@Bean
+	public DataSourceInitializer dataSourceInitializer(DataSource dataSource) {
+	    ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
+	    resourceDatabasePopulator.addScript(new ClassPathResource("/data.sql"));
+
+	        DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
+	        dataSourceInitializer.setDataSource(dataSource);
+	        dataSourceInitializer.setDatabasePopulator(resourceDatabasePopulator);
+	        return dataSourceInitializer;
+	    }
 	
 	
 	@Bean

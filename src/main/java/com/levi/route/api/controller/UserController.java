@@ -24,7 +24,7 @@ import com.levi.route.api.util.PasswordUtils;
 
 
 @RestController
-@RequestMapping("/route_processor/user")
+@RequestMapping("/routeProcessor/user")
 @CrossOrigin(origins = "*")
 public class UserController {
 	
@@ -34,34 +34,15 @@ public class UserController {
 	private UserService userService;
 	
 	@PostMapping
-	public ResponseEntity<Response<UserDto>> create(@Valid @RequestBody UserDto userDto,
-			BindingResult result) throws NoSuchAlgorithmException {
+	public UserDto create(@Valid @RequestBody UserDto userDto) throws NoSuchAlgorithmException {
 		log.info("Creating user: {}", userDto.toString());
-		Response<UserDto> response = new Response<UserDto>();
 
-		User user = this.convertDtoToUser(userDto, result);
-		
+		User user = User.fromDto(userDto);
 		this.userService.persist(user);
-
-		response.setData(this.convertUserToDto(user));
-		return ResponseEntity.ok(response);
-	}
-	
-	private User convertDtoToUser(UserDto userDto, BindingResult result)
-			throws NoSuchAlgorithmException {
-		User user = new User();
-		user.setUsername(userDto.getUsername());
-		user.setPassword(PasswordUtils.generateBCrypt(userDto.getPassword()));
-		user.setRole(Role.ROLE_ADMIN);
-		return user;
-	}
-
-	private UserDto convertUserToDto(User user) {
-		UserDto userDto = new UserDto();
-		userDto.setId(user.getId());
-		userDto.setUsername(user.getUsername());
-		userDto.setPassword(user.getPassword());
+		
 		return userDto;
 	}
+	
+	
 
 }

@@ -1,7 +1,6 @@
 package com.levi.route.api.service;
 
 import java.time.Instant;
-import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -31,7 +30,7 @@ public class StopService {
 		this.stopRepository.deleteById(id);
 	}
 	
-	public List<Stop> findFinishedStopsByRoute(Date date, Long routeId) {
+	public List<Stop> findFinishedStopsByRoute(Instant date, Long routeId) {
 		log.info("Finding finished stops by date {}", date);
 		return this.stopRepository.findFinishedStopsByRoute(date, routeId);
 	}

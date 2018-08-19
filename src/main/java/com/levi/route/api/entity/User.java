@@ -1,5 +1,7 @@
 package com.levi.route.api.entity;
 
+import java.security.NoSuchAlgorithmException;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -9,7 +11,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.levi.route.api.dto.UserDto;
 import com.levi.route.api.enun.Role;
+import com.levi.route.api.util.PasswordUtils;
 
 @Entity
 @Table(name = "user")
@@ -60,6 +64,15 @@ public class User {
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+	
+	public static User fromDto(UserDto userDto)
+			throws NoSuchAlgorithmException {
+		User user = new User();
+		user.setUsername(userDto.getUsername());
+		user.setPassword(PasswordUtils.generateBCrypt(userDto.getPassword()));
+		user.setRole(Role.ROLE_ADMIN);
+		return user;
 	}
 	
 }

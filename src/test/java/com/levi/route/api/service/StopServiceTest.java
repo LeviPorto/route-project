@@ -2,6 +2,7 @@ package com.levi.route.api.service;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,7 +37,7 @@ public class StopServiceTest {
 	@Before
 	public void setUp() throws Exception {
 		BDDMockito.given(this.stopRepository.save(Mockito.any(Stop.class))).willReturn(new Stop());
-		BDDMockito.given(this.stopRepository.findFinishedStopsByRoute(Mockito.any(Date.class), Mockito.anyLong())).willReturn(new ArrayList<Stop>());
+		BDDMockito.given(this.stopRepository.findFinishedStopsByRoute(Mockito.any(Instant.class), Mockito.anyLong())).willReturn(new ArrayList<Stop>());
 		BDDMockito.given(this.stopRepository.findLongerStopsByRoute(Mockito.anyLong())).willReturn(new ArrayList<Stop>());
 	}
 	
@@ -48,7 +49,7 @@ public class StopServiceTest {
 
 	@Test
 	public void findFinishedStopByRouteTest() {
-		List<Stop> user = this.stopService.findFinishedStopsByRoute(new Date(), 1L);
+		List<Stop> user = this.stopService.findFinishedStopsByRoute(Instant.now(), 1L);
 		assertNotNull(user);
 	}
 	

@@ -1,7 +1,7 @@
 package com.levi.route.api.repository;
 
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,12 +16,12 @@ public interface RouteRepository extends JpaRepository<Route, Long> {
 	List<Route> findPendingOrProgress();
 	
 	@Query(value = "SELECT CASE" + 
-			"			WHEN STR_TO_DATE(:date, '%Y-%m-%d %h:%i:%s') < r.update_status_progress_date OR r.update_status_progress_date IS NULL THEN 'PENDING'" + 
-			"   		WHEN (STR_TO_DATE(:date, '%Y-%m-%d %h:%i:%s') >= r.update_status_progress_date AND STR_TO_DATE(:date, '%Y-%m-%d %h:%i:%s') < r.update_status_finished_date) OR (r.update_status_finished_date IS NULL) THEN 'PROGRESS'" + 
-			"   		WHEN STR_TO_DATE(:date, '%Y-%m-%d %h:%i:%s') >= r.update_status_finished_date THEN 'FINISHED'" + 
+			"			WHEN STR_TO_DATE(:date, '%Y-%m-%d %h:%i:%s') < r.start_date OR r.start_date IS NULL THEN 'PENDING'" + 
+			"   		WHEN (STR_TO_DATE(:date, '%Y-%m-%d %h:%i:%s') >= r.start_date AND STR_TO_DATE(:date, '%Y-%m-%d %h:%i:%s') < r.end_date) OR (r.end_date IS NULL) THEN 'PROGRESS'" + 
+			"   		WHEN STR_TO_DATE(:date, '%Y-%m-%d %h:%i:%s') >= r.end_date THEN 'FINISHED'" + 
 			"		END AS status " + 
 			"		from route AS r WHERE r.id = :route_id", nativeQuery = true)
-	String findStatusInDate(@Param("date") Date date, @Param("route_id") Long routeId);
+	String findStatusInDate(@Param("date") Instant date, @Param("route_id") Long routeId);
 	
 	
 	

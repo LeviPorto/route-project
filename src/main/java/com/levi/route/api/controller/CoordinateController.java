@@ -17,7 +17,7 @@ import com.levi.route.api.service.CoordinateProcessorService;
 import com.levi.route.api.service.CoordinateService;
 
 @RestController
-@RequestMapping("/route_processor/coordinate")
+@RequestMapping("/routeProcessor/coordinate")
 @CrossOrigin(origins = "*")
 public class CoordinateController {
 

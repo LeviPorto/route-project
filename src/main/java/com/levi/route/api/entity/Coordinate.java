@@ -1,7 +1,6 @@
 package com.levi.route.api.entity;
 
 import java.time.Instant;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +13,7 @@ import com.levi.route.api.dto.CoordinateDto;
 
 @Entity
 @Table(name = "coordinate")
-public class Coordinate {
+public class Coordinate implements GeoPoint {
 	
 	private Long id;
 	private double lat;
@@ -73,10 +72,10 @@ public class Coordinate {
 	public static Coordinate fromDto(CoordinateDto coordinateDto) {
 		Coordinate coordinate = new Coordinate();
 		
-		coordinate.setInstant(Instant.now());
-		coordinate.setLat(coordinateDto.getLat());
-		coordinate.setLng(coordinateDto.getLng());
-		coordinate.setVehicleId(coordinateDto.getVehicleId());
+		coordinate.setInstant(Instant.parse(coordinateDto.getInstant()));
+		coordinate.setLat(Double.valueOf(coordinateDto.getLat()));
+		coordinate.setLng(Double.valueOf(coordinateDto.getLng()));
+		coordinate.setVehicleId(Long.valueOf(coordinateDto.getVehicleId()));
 
 		return coordinate;
 	}

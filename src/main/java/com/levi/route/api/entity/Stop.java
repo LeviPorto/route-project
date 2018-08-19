@@ -1,7 +1,6 @@
 package com.levi.route.api.entity;
 
 import java.time.Instant;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,11 +14,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.levi.route.api.dto.StopDto;
 import com.levi.route.api.enun.StopStatus;
 
 @Entity
 @Table(name = "stop")
-public class Stop {
+public class Stop implements GeoPoint {
 
 	private Long id;
 	private double lat;
@@ -119,8 +119,32 @@ public class Stop {
 		this.endDate = endDate;
 	}
 
+	public static StopDto toDto(Stop stop) {
+		StopDto stopDto = new StopDto();
+		
+		stopDto.setId(stop.getId());
+		stopDto.setLat(String.valueOf(stop.getLat()));
+		stopDto.setLng(String.valueOf(stop.getLng()));
+		stopDto.setDescription(stop.getDescription());
+		stopDto.setDeliveryRadius(String.valueOf(stop.getDeliveryRadius()));
+		stopDto.setRouteId(String.valueOf(stop.getRoute().getId()));
+		stopDto.setStatus(stop.getStopStatus());
+		
+		return stopDto;
+	}
 	
-	
-	
+	public static Stop fromDto(StopDto stopDto) {
+		Stop stop = new Stop();
+		Route route = new Route();
+		stop.setRoute(route);
+		stop.getRoute().setId(Long.valueOf(stopDto.getRouteId()));
+		stop.setLat(Double.valueOf(stopDto.getLat()));
+		stop.setLng(Double.valueOf(stopDto.getLng()));
+		stop.setDescription(stopDto.getDescription());
+		stop.setDeliveryRadius(Double.valueOf(stopDto.getDeliveryRadius()));
+		stop.setStopStatus(stopDto.getStatus());
+		
+		return stop;
+	}
 	
 }

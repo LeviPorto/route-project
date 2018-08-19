@@ -1,7 +1,6 @@
 package com.levi.route.api.entity;
 
 import java.time.Instant;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -16,9 +15,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.levi.route.api.dto.RouteDto;
 import com.levi.route.api.enun.RouteStatus;
 
 @Entity
@@ -104,6 +103,14 @@ public class Route {
 	}
 
 	
-	
+	public static Route fromDto(RouteDto routeDto) {
+		Route route = new Route();
+		
+		route.setAssignedVehicle(Long.valueOf(routeDto.getAssignedVehicle()));
+		route.setRoutePlan(routeDto.getRoutePlan());
+		route.setPlannedStops(routeDto.getPlannedStops());
+		
+		return route;
+	}
 	
 }

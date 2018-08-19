@@ -6,44 +6,60 @@ import javax.validation.constraints.NotNull;
 
 public class CoordinateDto {
 
-	private double lat;
-	private double lng;
-	@NotNull
-	private Instant instant;
-	@NotNull
-	private Long vehicleId;
+	private String lat;
+	private String lng;
+	private String instant;
+	private String vehicleId;
 
-	public double getLat() {
+	
+
+	public String getLat() {
 		return lat;
 	}
 
-	public void setLat(double lat) {
+
+
+	public void setLat(String lat) {
 		this.lat = lat;
 	}
 
-	public double getLng() {
+
+
+	public String getLng() {
 		return lng;
 	}
 
-	public void setLng(double lng) {
+
+
+	public void setLng(String lng) {
 		this.lng = lng;
 	}
 
-	public Instant getInstant() {
+
+
+	public String getInstant() {
 		return instant;
 	}
 
-	public void setInstant(Instant instant) {
+
+
+	public void setInstant(String instant) {
 		this.instant = instant;
 	}
 
-	public Long getVehicleId() {
+
+
+	public String getVehicleId() {
 		return vehicleId;
 	}
 
-	public void setVehicleId(Long vehicleId) {
+
+
+	public void setVehicleId(String vehicleId) {
 		this.vehicleId = vehicleId;
 	}
+
+
 
 	@Override
 	public String toString() {

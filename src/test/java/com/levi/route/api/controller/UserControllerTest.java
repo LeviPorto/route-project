@@ -39,7 +39,7 @@ public class UserControllerTest {
 	@MockBean
 	private UserService userService;
 	
-	private static final String URL_BASE = "/api/users/";
+	private static final String URL_BASE = "/routeProcessor/user/";
 	private static final String USERNAME = "username";
 	private static final String PASSWORD = "password";
 	
@@ -54,8 +54,7 @@ public class UserControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.data.username").value(USERNAME))
-				.andExpect(jsonPath("$.errors").isEmpty());
+				.andExpect(jsonPath("$.data.username").doesNotExist());
 	}
 	
 	private String getPostRequisition() throws JsonProcessingException {

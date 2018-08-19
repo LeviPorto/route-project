@@ -3,6 +3,7 @@ package com.levi.route.api.repository;
 import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
+import java.time.Instant;
 import java.util.List;
 
 import org.junit.After;
@@ -21,7 +22,6 @@ import com.levi.route.api.enun.RouteStatus;
 import com.levi.route.api.enun.StopStatus;
 import com.levi.route.api.repository.RouteRepository;
 import com.levi.route.api.repository.StopRepository;
-import com.levi.route.api.util.DateUtil;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RouteProjectApplication.class)
@@ -34,7 +34,7 @@ public class StopRepositoryTest {
 	@Autowired
 	private RouteRepository routeRepository;
 	
-	private static final String UPDATE_FINISHED_DATE = "2002-01-04 08:00:00";
+	private static final String UPDATE_FINISHED_DATE = "2002-01-04T08:00:00.377Z";
 	private Long idRoute;
 	
 	@Before
@@ -44,11 +44,11 @@ public class StopRepositoryTest {
 		this.stopRepository.save(returnStopToTest(route));
 		Stop firstStopFinised = returnStopToTest(route);
 		firstStopFinised.setStopStatus(StopStatus.FINISHED);
-		firstStopFinised.setUpdateStatusFinishedDate(DateUtil.sdf.parse("2002-01-04 01:00:00"));
+		firstStopFinised.setEndDate(Instant.parse("2002-01-04T01:00:00.377Z"));
 		this.stopRepository.save(firstStopFinised);
 		Stop secondStopFinised = returnStopToTest(route);
 		secondStopFinised.setStopStatus(StopStatus.FINISHED);
-		secondStopFinised.setUpdateStatusFinishedDate(DateUtil.sdf.parse("2002-01-04 08:00:00"));
+		secondStopFinised.setEndDate(Instant.parse("2002-01-04T08:00:00.377Z"));
 		this.stopRepository.save(secondStopFinised);
 	}
 
@@ -59,14 +59,14 @@ public class StopRepositoryTest {
 	
 	@Test
 	public void findFinishedStopByRouteTest() throws ParseException {
-		List<Stop> stops = stopRepository.findFinishedStopsByRoute(DateUtil.sdf.parse("2002-01-04 06:00:00"), idRoute);
+		List<Stop> stops = stopRepository.findFinishedStopsByRoute(Instant.parse("2002-01-04T06:00:00.377Z"), idRoute);
 		assertEquals(1, stops.size());
 	}
 	
 	@Test
 	public void findLongerStopByRouteTest() throws ParseException {
 		List<Stop> stops = stopRepository.findLongerStopsByRoute(idRoute);
-		assertEquals(UPDATE_FINISHED_DATE, DateUtil.sdf.format(stops.get(1).getUpdateStatusFinishedDate()));
+		assertEquals(Instant.parse(UPDATE_FINISHED_DATE), stops.get(0).getEndDate());
 	}
 	
 	private Stop returnStopToTest(Route route) throws ParseException {
@@ -77,7 +77,7 @@ public class StopRepositoryTest {
 		stop.setLat(Long.valueOf(20));
 		stop.setLng(Long.valueOf(20));
 		stop.setStopStatus(StopStatus.PROGRESS);
-		stop.setUpdateStatusProgressDate(DateUtil.sdf.parse("2002-01-04 00:00:00"));
+		stop.setStartDate(Instant.parse("2002-01-04T00:00:00.377Z"));
 		return stop;
 	}
 	
