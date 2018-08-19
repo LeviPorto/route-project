@@ -1,6 +1,6 @@
 package com.levi.route.api.entity;
 
-import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -29,8 +29,8 @@ public class Route {
 	private Long assignedVehicle;
 	private List<Stop> plannedStops;
 	private String routePlan;
-	private Instant startDate;
-	private Instant endDate;
+	private Date startDate;
+	private Date endDate;
 	
 	public Route() {
 		
@@ -85,24 +85,23 @@ public class Route {
 	}
 
 	@Column(name = "start_date", nullable = true)
-	public Instant getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Instant startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
 
 	@Column(name = "end_date", nullable = true)
-	public Instant getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Instant endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 
-	
 	public static Route fromDto(RouteDto routeDto) {
 		Route route = new Route();
 		

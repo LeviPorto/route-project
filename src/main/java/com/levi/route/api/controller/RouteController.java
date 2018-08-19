@@ -1,6 +1,5 @@
 package com.levi.route.api.controller;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,7 +65,7 @@ public class RouteController {
 	
 	@GetMapping(value = "/statusInDate/{routeId}")
 	public String findRoutesByStatusInDate( @PathVariable Long routeId,
-			@RequestParam Instant date) {
+			@RequestParam String date) {
 		log.info("Finding routes by status in {}", date.toString());
 		String status = this.routeService.findStatusInDate(date, routeId);
 		return status;
@@ -89,7 +88,7 @@ public class RouteController {
 	
 	@GetMapping(value = "/finishedStopsByRoute/{routeId}")
 	public List<StopDto> findFinishedStopByRoute(@PathVariable Long routeId,
-			@RequestParam Instant date)  {
+			@RequestParam("date") String date)  {
 		
 		log.info("Calculating finished stops by route in: {}", date);
 	
@@ -102,5 +101,4 @@ public class RouteController {
 		return stopDtos;
 	}
 	
-
 }

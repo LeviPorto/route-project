@@ -1,6 +1,5 @@
 package com.levi.route.api.service;
 
-import java.time.Instant;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -30,7 +29,7 @@ public class RouteService {
 		return this.routeRepository.findPendingOrProgress();
 	}
 
-	public String findStatusInDate(Instant date, Long routeId) {
+	public String findStatusInDate(String date, Long routeId) {
 		log.info("Finding routes by status in {}", date);
 		return this.routeRepository.findStatusInDate(date, routeId);
 	}

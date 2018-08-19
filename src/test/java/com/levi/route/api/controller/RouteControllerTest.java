@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -47,7 +48,7 @@ public class RouteControllerTest {
 	private static final String URL_BASE = "/routeProcessor/route/";
 	private static final Long ASSIGNED_VEHICLE = 1L;
 	private static final String ROUTE_PLAN = "A";
-	private static final RouteStatus STATUS = RouteStatus.PENDING;
+	private static final RouteStatus STATUS = RouteStatus.FINISHED;
 	private static final Long ROUTE_ID = 1L;
 	
 	@Test(expected = NestedServletException.class)
@@ -100,6 +101,7 @@ public class RouteControllerTest {
 		route.setId(ROUTE_ID);
 		route.setRoutePlan(ROUTE_PLAN);
 		route.setStatus(STATUS);
+		route.setEndDate(new Date());
 		
 		return route;
 	}

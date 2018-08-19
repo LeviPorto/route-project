@@ -2,6 +2,8 @@ package com.levi.route.api.dto;
 
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 import com.levi.route.api.entity.Stop;
 import com.levi.route.api.enun.RouteStatus;
 
@@ -41,6 +43,7 @@ public class RouteDto {
 		this.routePlan = routePlan;
 	}
 
+	@NotNull
 	public String getAssignedVehicle() {
 		return assignedVehicle;
 	}
@@ -69,6 +72,5 @@ public class RouteDto {
 	public String toString() {
 		return "RouteDto [id=" + id + ", routePlan=" + routePlan + ", assignedVehicle=" + assignedVehicle+"]";
 	}
-	
 	
 }

@@ -1,6 +1,8 @@
 package com.levi.route.api.entity;
 
-import java.time.Instant;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +20,7 @@ public class Coordinate implements GeoPoint {
 	private Long id;
 	private double lat;
 	private double lng;
-	private Instant instant;
+	private Date instant;
 	private Long vehicleId;
 	
 	public Coordinate() {
@@ -61,18 +63,18 @@ public class Coordinate implements GeoPoint {
 		this.vehicleId = vehicleId;
 	}
 
-	public Instant getInstant() {
+	public Date getInstant() {
 		return instant;
 	}
 
-	public void setInstant(Instant instant) {
+	public void setInstant(Date instant) {
 		this.instant = instant;
 	}
-	
-	public static Coordinate fromDto(CoordinateDto coordinateDto) {
+
+	public static Coordinate fromDto(CoordinateDto coordinateDto) throws ParseException {
 		Coordinate coordinate = new Coordinate();
 		
-		coordinate.setInstant(Instant.parse(coordinateDto.getInstant()));
+		coordinate.setInstant(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(coordinateDto.getInstant()));
 		coordinate.setLat(Double.valueOf(coordinateDto.getLat()));
 		coordinate.setLng(Double.valueOf(coordinateDto.getLng()));
 		coordinate.setVehicleId(Long.valueOf(coordinateDto.getVehicleId()));

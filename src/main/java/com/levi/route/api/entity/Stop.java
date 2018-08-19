@@ -1,6 +1,6 @@
 package com.levi.route.api.entity;
 
-import java.time.Instant;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.levi.route.api.dto.StopDto;
 import com.levi.route.api.enun.StopStatus;
@@ -28,8 +30,8 @@ public class Stop implements GeoPoint {
 	private double deliveryRadius;
 	private Route route;
 	private StopStatus stopStatus;
-	private Instant startDate;
-	private Instant endDate;
+	private Date startDate;
+	private Date endDate;
 	
 	public Stop() {
 		
@@ -102,20 +104,22 @@ public class Stop implements GeoPoint {
 	}
 
 	@Column(name = "start_date", nullable = true)
-	public Instant getStartDate() {
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	public Date getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Instant startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
 
 	@Column(name = "end_date", nullable = true)
-	public Instant getEndDate() {
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	public Date getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Instant endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 
@@ -136,6 +140,7 @@ public class Stop implements GeoPoint {
 	public static Stop fromDto(StopDto stopDto) {
 		Stop stop = new Stop();
 		Route route = new Route();
+		
 		stop.setRoute(route);
 		stop.getRoute().setId(Long.valueOf(stopDto.getRouteId()));
 		stop.setLat(Double.valueOf(stopDto.getLat()));

@@ -1,7 +1,6 @@
 package com.levi.route.api.repository;
 
 
-import java.time.Instant;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,7 +20,7 @@ public interface RouteRepository extends JpaRepository<Route, Long> {
 			"   		WHEN STR_TO_DATE(:date, '%Y-%m-%d %h:%i:%s') >= r.end_date THEN 'FINISHED'" + 
 			"		END AS status " + 
 			"		from route AS r WHERE r.id = :route_id", nativeQuery = true)
-	String findStatusInDate(@Param("date") Instant date, @Param("route_id") Long routeId);
+	String findStatusInDate(@Param("date") String date, @Param("route_id") Long routeId);
 	
 	
 	

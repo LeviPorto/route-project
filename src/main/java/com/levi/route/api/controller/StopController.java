@@ -48,6 +48,5 @@ public class StopController {
 		log.info("Removing stop ID: {}", id);
 		this.stopService.remove(id);
 	}
-	
-	
+
 }

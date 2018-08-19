@@ -2,8 +2,8 @@ package com.levi.route.api.service;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,15 +13,11 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.levi.route.api.RouteProjectApplication;
 import com.levi.route.api.entity.Coordinate;
-import com.levi.route.api.entity.Route;
 import com.levi.route.api.repository.CoordinateRepository;
 import com.levi.route.api.service.CoordinateService;
 
@@ -39,12 +35,13 @@ public class CoordinateServiceTest {
 	@Before
 	public void setUp() throws Exception {
 		BDDMockito.given(this.coordinateRepository.save(Mockito.any(Coordinate.class))).willReturn(new Coordinate());
-		BDDMockito.given(this.coordinateRepository.findLastTop2ByVehicle(Mockito.anyLong())).willReturn(new ArrayList<Coordinate>());
+		BDDMockito.given(this.coordinateRepository.findPreviousCoordinate(Mockito.anyLong(), Mockito.any(Date.class))).willReturn(Optional.of(new Coordinate()));
 	}
+	
 
 	@Test
 	public void findTop2ByVehicleIdTest() {
-		List<Coordinate> coordinates = this.coordinateService.findLastTop2ByVehicle(1L);
+		Optional<Coordinate> coordinates = this.coordinateService.findPreviousCoordinate(1L, new Date());
 		assertNotNull(coordinates);
 	}
 	

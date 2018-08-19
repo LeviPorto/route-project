@@ -4,7 +4,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.time.Instant;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,7 +42,7 @@ public class CoordinateControllerTest {
 	private CoordinateService coordinateService;
 	
 	private static final String URL_BASE = "/routeProcessor/coordinate/";
-	private static final Instant INSTANT = Instant.parse("2017-11-01T15:09:27.377Z");
+	private static final String INSTANT = "2018-08-08T23:49:15+00:00";
 	private static final double LATITUDE = 20.0;
 	private static final double LONGITUDE = 20.0;
 	private static final Long COORDINATE_ID = 1L;
@@ -76,10 +77,10 @@ public class CoordinateControllerTest {
 		return mapper.writeValueAsString(coordinateDto);
 	}
 	
-	private Coordinate getData() {
+	private Coordinate getData() throws ParseException {
 		Coordinate coordinate = new Coordinate();
 		coordinate.setId(COORDINATE_ID);
-		coordinate.setInstant(INSTANT);
+		coordinate.setInstant(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(INSTANT));
 		coordinate.setLat(LATITUDE);
 		coordinate.setLng(LONGITUDE);
 		coordinate.setVehicleId(VEHICLE_ID);

@@ -2,9 +2,7 @@ package com.levi.route.api.service;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -38,7 +36,7 @@ public class RouteServiceTest {
 	public void setUp() throws Exception {
 		BDDMockito.given(this.routeRepository.save(Mockito.any(Route.class))).willReturn(new Route());
 		BDDMockito.given(this.routeRepository.findPendingOrProgress()).willReturn(new ArrayList<Route>());
-		BDDMockito.given(this.routeRepository.findStatusInDate(Mockito.any(Instant.class), Mockito.anyLong())).willReturn(new String());
+		BDDMockito.given(this.routeRepository.findStatusInDate(Mockito.any(String.class), Mockito.anyLong())).willReturn(new String());
 	}
 	
 	@Test
@@ -55,7 +53,7 @@ public class RouteServiceTest {
 	
 	@Test
 	public void findRoutesByStatusInDateTest() {
-		String status = this.routeService.findStatusInDate(Instant.now(), 1L);
+		String status = this.routeService.findStatusInDate("2011-01-01T20:00:00", 1L);
 		assertNotNull(status);
 	}
 }

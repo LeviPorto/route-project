@@ -1,5 +1,7 @@
 package com.levi.route.api.dto;
 
+import javax.validation.constraints.NotNull;
+
 public class UserDto {
 
 	
@@ -13,12 +15,16 @@ public class UserDto {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
+	@NotNull
 	public String getUsername() {
 		return username;
 	}
 	public void setUsername(String username) {
 		this.username = username;
 	}
+	
+	@NotNull
 	public String getPassword() {
 		return password;
 	}

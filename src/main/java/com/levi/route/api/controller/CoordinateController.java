@@ -1,5 +1,7 @@
 package com.levi.route.api.controller;
 
+import java.text.ParseException;
+
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -30,7 +32,7 @@ private static final Logger log = LoggerFactory.getLogger(RouteController.class)
 	private CoordinateProcessorService processor;
 	
 	@PostMapping
-	public CoordinateDto create(@Valid @RequestBody CoordinateDto coordinateDto) {
+	public CoordinateDto create(@Valid @RequestBody CoordinateDto coordinateDto) throws ParseException {
 		log.info("Creating coordinate and process");
 		Coordinate coordinate = coordinateService.persist(Coordinate.fromDto(coordinateDto));
 		processor.processCoordinate(coordinate);

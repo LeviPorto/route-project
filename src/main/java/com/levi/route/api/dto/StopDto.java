@@ -1,5 +1,7 @@
 package com.levi.route.api.dto;
 
+import javax.validation.constraints.NotNull;
+
 import com.levi.route.api.enun.StopStatus;
 
 public class StopDto {
@@ -20,6 +22,7 @@ public class StopDto {
 		this.id = id;
 	}
 
+	@NotNull
 	public String getLat() {
 		return lat;
 	}
@@ -28,6 +31,7 @@ public class StopDto {
 		this.lat = lat;
 	}
 
+	@NotNull
 	public String getLng() {
 		return lng;
 	}
@@ -44,6 +48,7 @@ public class StopDto {
 		this.description = description;
 	}
 
+	@NotNull
 	public String getDeliveryRadius() {
 		return deliveryRadius;
 	}
@@ -52,6 +57,7 @@ public class StopDto {
 		this.deliveryRadius = deliveryRadius;
 	}
 
+	@NotNull
 	public String getRouteId() {
 		return routeId;
 	}
@@ -73,6 +79,5 @@ public class StopDto {
 		return "StopDto [id=" + id + ", lat=" + lat + ", lng=" + lng + ", description=" + description
 				+ ", deliveryRadius=" + deliveryRadius + ", routeId=" + routeId + "]";
 	}
-	
 	
 }

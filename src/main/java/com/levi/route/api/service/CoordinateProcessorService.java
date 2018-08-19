@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,9 +43,7 @@ public class CoordinateProcessorService {
         startRouteIfNecessary(route);
         for (Stop stop : route.getPlannedStops()) {
             if (previousCoordinate.isPresent()) {
-            	if(!previousCoordinate.get().getId().equals(coordinate.getId())) {
-            		processStop(coordinate, previousCoordinate.get(), stop);
-            	}
+            	processStop(coordinate, previousCoordinate.get(), stop);
             }
         }
         endRouteIfNecessary(route);
@@ -66,7 +64,7 @@ public class CoordinateProcessorService {
     private void startRouteIfNecessary(Route route) {
         if (isPending(route)) {
             route.setStatus(RouteStatus.PROGRESS);
-            route.setStartDate(Instant.now());
+            route.setStartDate(new Date());
             routeService.persist(route);
         }
     }
@@ -78,7 +76,7 @@ public class CoordinateProcessorService {
 
         if (isInProgress(route) && finishedStops == route.getPlannedStops().size()) {
                 route.setStatus(RouteStatus.FINISHED);
-                route.setEndDate(Instant.now());
+                route.setEndDate(new Date());
                 routeService.persist(route);
         }
     }
@@ -88,7 +86,7 @@ public class CoordinateProcessorService {
                 hasStayedLongEnough(coordinate, previousCoordinate)) {
 
             stop.setStopStatus(StopStatus.PROGRESS);
-            stop.setStartDate(Instant.now());
+            stop.setStartDate(new Date());
             stopService.persist(stop);
         }
     }
@@ -97,13 +95,13 @@ public class CoordinateProcessorService {
         if (distance(coordinate, stop) > stop.getDeliveryRadius()) {
 
             stop.setStopStatus(StopStatus.FINISHED);
-            stop.setEndDate(Instant.now());
+            stop.setEndDate(new Date());
             stopService.persist(stop);
         }
     }
 
     private boolean hasStayedLongEnough(Coordinate coordinate, Coordinate previousCoordinate) {
-        return Duration.between(previousCoordinate.getInstant(), coordinate.getInstant()).toMinutes() <= 5;
+        return Duration.between(previousCoordinate.getInstant().toInstant(), coordinate.getInstant().toInstant()).toMinutes() <= 5;
     }
 
     private boolean hasTwoCoordinatesWithinStop(Coordinate coordinate, Coordinate previousCoordinate, Stop stop) {

@@ -1,11 +1,11 @@
 package com.levi.route.api.repository;
 
+
 import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
-import java.time.Instant;
 import java.util.Date;
-import java.util.List;
+import java.util.Optional;
 
 import org.junit.After;
 import org.junit.Before;
@@ -40,14 +40,14 @@ public class CoordinateRepositoryTest {
 	}
 	
 	@Test
-	public void findTop2ByVehicleId() {
-		List<Coordinate> routes = coordinateRepository.findLastTop2ByVehicle(Long.valueOf(12345));
-		assertEquals(2, routes.size());
+	public void findPreviousCoordinate() {
+		Optional<Coordinate> coordinate = coordinateRepository.findPreviousCoordinate(12345, new Date());
+		assertEquals(Long.valueOf(2), coordinate.get().getId());
 	}
 	
 	private Coordinate returnCoordinateToTest() throws ParseException {
 		Coordinate coordinate = new Coordinate();
-		coordinate.setInstant(Instant.now());
+		coordinate.setInstant(new Date());
 		coordinate.setLat(20.0);
 		coordinate.setLng(20.0);
 		coordinate.setVehicleId(Long.valueOf(12345));
