@@ -65,7 +65,7 @@ public class Route {
 		this.status = status;
 	}
 
-	@OneToMany(mappedBy = "route", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "route", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JsonIgnoreProperties("route")
 	public List<Stop> getPlannedStops() {
 		return plannedStops;
