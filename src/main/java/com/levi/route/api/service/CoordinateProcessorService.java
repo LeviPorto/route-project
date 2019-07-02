@@ -5,46 +5,62 @@ import com.levi.route.api.entity.Route;
 import com.levi.route.api.entity.Stop;
 import com.levi.route.api.enun.RouteStatus;
 import com.levi.route.api.enun.StopStatus;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
+import static com.levi.route.api.service.CoordinateService.PREVIOUS_COORDINATE_PREFIX;
 import static com.levi.route.api.util.DistanceCalculatorUtil.distance;
 
 @Service
+@Slf4j
 public class CoordinateProcessorService {
 
-    @Autowired
-    private RouteService routeService;
+    private final RouteService routeService;
 
-    @Autowired
-    private StopService stopService;
+    private final StopService stopService;
 
-    @Autowired
-    private CoordinateService coordinateService;
+    private final CoordinateService coordinateService;
 
-    @Async
-    public void processCoordinate(Coordinate coordinate) {
+    private final RedisTemplate redisTemplate;
+
+    public CoordinateProcessorService(RouteService routeService, StopService stopService, CoordinateService coordinateService, RedisTemplate redisTemplate) {
+        this.routeService = routeService;
+        this.stopService = stopService;
+        this.coordinateService = coordinateService;
+        this.redisTemplate = redisTemplate;
+    }
+
+    @KafkaListener(topics = "coordinate", groupId = "1234", containerFactory = "kafkaListenerContainerFactory")
+    public void processCoordinate(@Payload Coordinate coordinate) {
+        log.info("Creating coordinate and process");
+        coordinateService.persist(coordinate);
         List<Route> routes = this.routeService.findPendingOrProgress();
         routes.forEach(route -> {
             if (isRouteCoordinate(coordinate, route)) {
                 processRoute(route, coordinate);
             }
         });
+        savePreviousCoordinateInCache(coordinate);
+    }
+
+    private void savePreviousCoordinateInCache(@Payload Coordinate coordinate) {
+        redisTemplate.opsForValue().set(PREVIOUS_COORDINATE_PREFIX + coordinate.getVehicleId(), coordinate, 1, TimeUnit.HOURS);
     }
 
     private void processRoute(Route route, Coordinate coordinate) {
         Optional<Coordinate> previousCoordinate = coordinateService.findPreviousCoordinate(coordinate.getVehicleId(), coordinate.getInstant());
         startRouteIfNecessary(route);
         for (Stop stop : route.getPlannedStops()) {
-            if (previousCoordinate.isPresent()) {
-            	processStop(coordinate, previousCoordinate.get(), stop);
-            }
+            previousCoordinate.ifPresent(value -> processStop(coordinate, value, stop));
         }
         endRouteIfNecessary(route);
     }

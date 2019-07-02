@@ -2,9 +2,7 @@ package com.levi.route.api.controller;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,13 +20,15 @@ import com.levi.route.api.service.StopService;
 @RestController
 @RequestMapping("/routeProcessor/stop")
 @CrossOrigin(origins = "*")
+@Slf4j
 public class StopController {
+	
+	private final StopService stopService;
 
-	private static final Logger log = LoggerFactory.getLogger(StopController.class);
-	
-	@Autowired
-	private StopService stopService;
-	
+	public StopController(StopService stopService) {
+		this.stopService = stopService;
+	}
+
 	@PostMapping
 	public StopDto create(@Valid @RequestBody StopDto stopDto) {
 		log.info("Add stop: {}", stopDto.toString());

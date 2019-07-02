@@ -1,19 +1,17 @@
 package com.levi.route.api.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+@Slf4j
 public class PasswordUtils {
-
-	private static final Logger log = LoggerFactory.getLogger(PasswordUtils.class);
 
 	public PasswordUtils() {
 	}
 
 	public static String generateBCrypt(String password) {
 		if (password == null) {
-			return password;
+			return null;
 		}
 
 		log.info("Generating hash with BCrypt.");

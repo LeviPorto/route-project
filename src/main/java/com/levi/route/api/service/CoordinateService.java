@@ -3,26 +3,35 @@ package com.levi.route.api.service;
 import java.util.Date;
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.levi.route.api.entity.Coordinate;
 import com.levi.route.api.repository.CoordinateRepository;
-import com.levi.route.api.service.CoordinateService;
 
 @Service
+@Slf4j
 public class CoordinateService {
 	
-	@Autowired
-	private CoordinateRepository coordinateRepository;
+	private final CoordinateRepository coordinateRepository;
 
-	private static final Logger log = LoggerFactory.getLogger(CoordinateService.class);
-	
+	private final RedisTemplate redisTemplate;
+
+	public static String PREVIOUS_COORDINATE_PREFIX = "PREVIOUS_COORDINATE_";
+
+	public CoordinateService(CoordinateRepository coordinateRepository, RedisTemplate redisTemplate) {
+		this.coordinateRepository = coordinateRepository;
+		this.redisTemplate = redisTemplate;
+	}
+
 	public Optional<Coordinate> findPreviousCoordinate(Long vehicleId, Date instant) {
 		log.info("Finding coordinates");
-		return this.coordinateRepository.findPreviousCoordinate(vehicleId, instant);
+		Coordinate previousCoordinate = (Coordinate) redisTemplate.opsForValue().get(PREVIOUS_COORDINATE_PREFIX + vehicleId);
+		if(previousCoordinate == null){
+			return coordinateRepository.findPreviousCoordinate(vehicleId, instant);
+		}
+		return Optional.of(previousCoordinate);
 	}
 	
 	public Coordinate persist(Coordinate coordinate) {

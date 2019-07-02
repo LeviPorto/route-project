@@ -5,9 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,16 +28,18 @@ import com.levi.route.api.service.StopService;
 @RestController
 @RequestMapping("/routeProcessor/route")
 @CrossOrigin(origins = "*")
+@Slf4j
 public class RouteController {
 	
-	private static final Logger log = LoggerFactory.getLogger(RouteController.class);
+	private final RouteService routeService;
 	
-	@Autowired
-	private RouteService routeService;
-	
-	@Autowired
-	private StopService stopService;
-	
+	private final StopService stopService;
+
+	public RouteController(RouteService routeService, StopService stopService) {
+		this.routeService = routeService;
+		this.stopService = stopService;
+	}
+
 	@PostMapping
 	public RouteDto persist(@Valid @RequestBody RouteDto routeDto) {
 		log.info("create route: {}", routeDto.toString());

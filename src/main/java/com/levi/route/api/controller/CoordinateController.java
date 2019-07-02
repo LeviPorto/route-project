@@ -4,9 +4,7 @@ import java.text.ParseException;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,22 +19,25 @@ import com.levi.route.api.service.CoordinateService;
 @RestController
 @RequestMapping("/routeProcessor/coordinate")
 @CrossOrigin(origins = "*")
+@Slf4j
 public class CoordinateController {
 
-private static final Logger log = LoggerFactory.getLogger(RouteController.class);
-	
-	@Autowired
-	private CoordinateService coordinateService;
-	
-	@Autowired
-	private CoordinateProcessorService processor;
-	
-	@PostMapping
-	public CoordinateDto create(@Valid @RequestBody CoordinateDto coordinateDto) throws ParseException {
-		log.info("Creating coordinate and process");
-		Coordinate coordinate = coordinateService.persist(Coordinate.fromDto(coordinateDto));
-		processor.processCoordinate(coordinate);
-		return coordinateDto;
-	}
-	
+
+    private final CoordinateService coordinateService;
+
+    private final CoordinateProcessorService processor;
+
+    public CoordinateController(CoordinateService coordinateService, CoordinateProcessorService processor) {
+        this.coordinateService = coordinateService;
+        this.processor = processor;
+    }
+
+    @PostMapping
+    public CoordinateDto create(@Valid @RequestBody CoordinateDto coordinateDto) throws ParseException {
+        log.info("Creating coordinate and process");
+        Coordinate coordinate = coordinateService.persist(Coordinate.fromDto(coordinateDto));
+        processor.processCoordinate(coordinate);
+        return coordinateDto;
+    }
+
 }

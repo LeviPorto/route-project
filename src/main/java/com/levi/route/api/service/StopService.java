@@ -2,23 +2,22 @@ package com.levi.route.api.service;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import com.levi.route.api.entity.Stop;
 import com.levi.route.api.repository.StopRepository;
-import com.levi.route.api.service.StopService;
 
 @Service
+@Slf4j
 public class StopService {
 
-	@Autowired
-	private StopRepository stopRepository;
+	private final StopRepository stopRepository;
 
-	private static final Logger log = LoggerFactory.getLogger(CoordinateService.class);
-	
+	public StopService(StopRepository stopRepository) {
+		this.stopRepository = stopRepository;
+	}
+
 	public Stop persist(Stop stop) {
 		log.info("Creating or updating stop: {}", stop);
 		return this.stopRepository.save(stop);

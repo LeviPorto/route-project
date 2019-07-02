@@ -4,9 +4,7 @@ import java.security.NoSuchAlgorithmException;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,13 +19,15 @@ import com.levi.route.api.service.UserService;
 @RestController
 @RequestMapping("/routeProcessor/user")
 @CrossOrigin(origins = "*")
+@Slf4j
 public class UserController {
 	
-	private static final Logger log = LoggerFactory.getLogger(UserController.class);
-	
-	@Autowired
-	private UserService userService;
-	
+	private final UserService userService;
+
+	public UserController(UserService userService) {
+		this.userService = userService;
+	}
+
 	@PostMapping
 	public UserDto create(@Valid @RequestBody UserDto userDto) throws NoSuchAlgorithmException {
 		log.info("Creating user: {}", userDto.toString());
