@@ -19,87 +19,39 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.levi.route.api.dto.RouteDto;
 import com.levi.route.api.enun.RouteStatus;
+import lombok.Data;
 
 @Entity
 @Table(name = "route")
+@Data
 public class Route {
-	
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "route_status", nullable = false)
 	private RouteStatus status;
+
+	@Column(name = "assigned_vehicle")
 	private Long assignedVehicle;
+
+	@OneToMany(mappedBy = "route", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JsonIgnoreProperties("route")
 	private List<Stop> plannedStops;
+
+	@Column(name = "route_plan", nullable = false)
 	private String routePlan;
+
+	@Column(name = "start_date")
 	private Date startDate;
+
+	@Column(name = "end_date")
 	private Date endDate;
 	
 	public Route() {
 		
-	}
-	
-	@Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	@Column(name = "assigned_vehicle", nullable = true)
-	public Long getAssignedVehicle() {
-		return assignedVehicle;
-	}
-
-	public void setAssignedVehicle(Long assignedVehicle) {
-		this.assignedVehicle = assignedVehicle;
-	}
-
-	@Enumerated(EnumType.STRING)
-	@Column(name = "route_status", nullable = false)
-	public RouteStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(RouteStatus status) {
-		this.status = status;
-	}
-
-	@OneToMany(mappedBy = "route", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JsonIgnoreProperties("route")
-	public List<Stop> getPlannedStops() {
-		return plannedStops;
-	}
-
-	public void setPlannedStops(List<Stop> plannedStops) {
-		this.plannedStops = plannedStops;
-	}
-
-	@Column(name = "route_plan", nullable = false)
-	public String getRoutePlan() {
-		return routePlan;
-	}
-
-	public void setRoutePlan(String routePlan) {
-		this.routePlan = routePlan;
-	}
-
-	@Column(name = "start_date", nullable = true)
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-
-	@Column(name = "end_date", nullable = true)
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
 	}
 
 	public static Route fromDto(RouteDto routeDto) {
@@ -110,6 +62,18 @@ public class Route {
 		route.setPlannedStops(routeDto.getPlannedStops());
 		
 		return route;
+	}
+
+	public static boolean isPending(Route route) {
+		return RouteStatus.PENDING.equals(route.getStatus());
+	}
+
+	public static boolean isInProgress(Route route) {
+		return RouteStatus.PROGRESS.equals(route.getStatus());
+	}
+
+	public static boolean isFinished(Route route) {
+		return RouteStatus.FINISHED.equals(route.getStatus());
 	}
 	
 }

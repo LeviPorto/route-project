@@ -29,7 +29,6 @@ public class AuthenticationController {
 	private static final String BEARER_PREFIX = "Bearer ";
 
 	private final JwtTokenUtil jwtTokenUtil;
-
 	private final UserDetailsService userDetailsService;
 
 	public AuthenticationController(JwtTokenUtil jwtTokenUtil, UserDetailsService userDetailsService) {

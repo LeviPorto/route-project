@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.levi.route.api.dto.StopDto;
@@ -21,106 +22,43 @@ import com.levi.route.api.enun.StopStatus;
 
 @Entity
 @Table(name = "stop")
+@Data
 public class Stop implements GeoPoint {
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(name = "latitude", nullable = false)
 	private double lat;
+
+	@Column(name = "longitude", nullable = false)
 	private double lng;
+
+	@Column(name = "description", nullable = false)
 	private String description;
+
+	@Column(name = "delivery_radius", nullable = false)
 	private double deliveryRadius;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="id_route")
 	private Route route;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "stop_status", nullable = true)
 	private StopStatus stopStatus;
+
+	@Column(name = "start_date", nullable = true)
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private Date startDate;
+
+	@Column(name = "end_date", nullable = true)
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private Date endDate;
 	
 	public Stop() {
 		
-	}
-	
-	@Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	@Column(name = "latitude", nullable = false)
-	public double getLat() {
-		return lat;
-	}
-	
-	public void setLat(double lat) {
-		this.lat = lat;
-	}
-	
-	@Column(name = "longitude", nullable = false)
-	public double getLng() {
-		return lng;
-	}
-	
-	public void setLng(double lng) {
-		this.lng = lng;
-	}
-	
-	@Column(name = "description", nullable = false)
-	public String getDescription() {
-		return description;
-	}
-	
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	@Column(name = "delivery_radius", nullable = false)
-	public double getDeliveryRadius() {
-		return deliveryRadius;
-	}
-	
-	public void setDeliveryRadius(double deliveryRadius) {
-		this.deliveryRadius = deliveryRadius;
-	}
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="id_route")
-	public Route getRoute() {
-		return route;
-	}
-
-	public void setRoute(Route route) {
-		this.route = route;
-	}
-
-	@Enumerated(EnumType.STRING)
-	@Column(name = "stop_status", nullable = true)
-	public StopStatus getStopStatus() {
-		return stopStatus;
-	}
-
-	public void setStopStatus(StopStatus stopStatus) {
-		this.stopStatus = stopStatus;
-	}
-
-	@Column(name = "start_date", nullable = true)
-	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-
-	@Column(name = "end_date", nullable = true)
-	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
 	}
 
 	public static StopDto toDto(Stop stop) {
@@ -150,6 +88,18 @@ public class Stop implements GeoPoint {
 		stop.setStopStatus(stopDto.getStatus());
 		
 		return stop;
+	}
+
+	public static boolean isInProgress(Stop stop) {
+		return StopStatus.PROGRESS.equals(stop.getStopStatus());
+	}
+
+	public static boolean isPending(Stop stop) {
+		return StopStatus.PENDING.equals(stop.getStopStatus());
+	}
+
+	public static boolean isFinished(Stop stop) {
+		return StopStatus.FINISHED.equals(stop.getStopStatus());
 	}
 	
 }

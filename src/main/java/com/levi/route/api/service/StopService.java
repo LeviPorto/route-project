@@ -34,7 +34,7 @@ public class StopService {
 	}
 
 	public List<Stop> findLongerStopsByRoute(Long routeId) {
-		log.info("Finding longer stop by route {}");
+		log.info("Finding longer stop by route {}", routeId);
 		return this.stopRepository.findLongerStopsByRoute(routeId);
 	}
 

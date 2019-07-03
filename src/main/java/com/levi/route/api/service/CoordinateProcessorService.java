@@ -17,6 +17,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import static com.levi.route.api.entity.Route.isInProgress;
+import static com.levi.route.api.entity.Route.isPending;
+
+
+import static com.levi.route.api.entity.Stop.isInProgress;
+import static com.levi.route.api.entity.Stop.isPending;
 import static com.levi.route.api.service.CoordinateService.PREVIOUS_COORDINATE_PREFIX;
 import static com.levi.route.api.util.DistanceCalculatorUtil.distance;
 
@@ -87,7 +93,7 @@ public class CoordinateProcessorService {
 
     private void endRouteIfNecessary(Route route) {
         long finishedStops = route.getPlannedStops().stream()
-                .filter(this::isFinished)
+                .filter(Stop::isFinished)
                 .count();
 
         if (isInProgress(route) && finishedStops == route.getPlannedStops().size()) {
@@ -128,23 +134,4 @@ public class CoordinateProcessorService {
         return distance(coordinate, stop) <= stop.getDeliveryRadius();
     }
 
-    private boolean isPending(Route route) {
-        return RouteStatus.PENDING.equals(route.getStatus());
-    }
-
-    private boolean isInProgress(Route route) {
-        return RouteStatus.PROGRESS.equals(route.getStatus());
-    }
-
-    private boolean isInProgress(Stop stop) {
-        return StopStatus.PROGRESS.equals(stop.getStopStatus());
-    }
-
-    private boolean isPending(Stop stop) {
-        return StopStatus.PENDING.equals(stop.getStopStatus());
-    }
-
-    private boolean isFinished(Stop stop) {
-        return StopStatus.FINISHED.equals(stop.getStopStatus());
-    }
 }

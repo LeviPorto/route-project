@@ -14,56 +14,29 @@ import javax.persistence.Table;
 import com.levi.route.api.dto.UserDto;
 import com.levi.route.api.enun.Role;
 import com.levi.route.api.util.PasswordUtils;
+import lombok.Data;
 
 @Entity
 @Table(name = "user")
+@Data
 public class User {
-	
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(name = "username", nullable = false)
 	private String username;
+
+	@Column(name = "password", nullable = false)
 	private String password;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "role", nullable = false)
 	private Role role;
 	
 	public User() {
 		
-	}
-	
-	@Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	@Column(name = "username", nullable = false)
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	@Column(name = "password", nullable = false)
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	@Enumerated(EnumType.STRING)
-	@Column(name = "role", nullable = false)
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
 	}
 	
 	public static User fromDto(UserDto userDto) throws NoSuchAlgorithmException {

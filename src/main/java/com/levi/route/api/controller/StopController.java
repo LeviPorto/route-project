@@ -38,7 +38,7 @@ public class StopController {
 		if(stop.getStopStatus() == null) {
 			stop.setStopStatus(StopStatus.PENDING);
 		}
-		stop = this.stopService.persist(stop);
+		this.stopService.persist(stop);
 		
 		return stopDto;
 	}

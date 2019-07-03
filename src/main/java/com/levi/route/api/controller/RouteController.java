@@ -67,21 +67,20 @@ public class RouteController {
 	public String findRoutesByStatusInDate( @PathVariable Long routeId,
 			@RequestParam String date) {
 		log.info("Finding routes by status in {}", date.toString());
-		String status = this.routeService.findStatusInDate(date, routeId);
-		return status;
+		return this.routeService.findStatusInDate(date, routeId);
 	}
 	
 	@GetMapping(value = "/longerStopsByRoute/{routeId}")
 	public List<StopDto> findLongerStopsByRoute(@PathVariable Long routeId)  {
 		
-		log.info("Finding longer stop by route {}");
+		log.info("Finding longer stop by route {}", routeId);
 		
 		List<Stop> stops = stopService.findLongerStopsByRoute(routeId);
 		List<StopDto> stopDtos = new ArrayList<>();
-		
-	    for(int i = 0;i<stops.size();++i) {
-	    	stopDtos.add(Stop.toDto(stops.get(i)));
-	    }
+
+		for (Stop stop : stops) {
+			stopDtos.add(Stop.toDto(stop));
+		}
 		
 		return stopDtos;
 	}
@@ -94,10 +93,10 @@ public class RouteController {
 	
 	    List<Stop> stops = stopService.findFinishedStopsByRoute(date, routeId);
 	    List<StopDto> stopDtos = new ArrayList<>();
-	    
-	    for(int i = 0;i<stops.size();++i) {
-	    	stopDtos.add(Stop.toDto(stops.get(i)));
-	    }
+
+		for (Stop stop : stops) {
+			stopDtos.add(Stop.toDto(stop));
+		}
 		return stopDtos;
 	}
 	
