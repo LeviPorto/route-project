@@ -9,9 +9,9 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 @Configuration
 public class RedisConfiguration {
 
-    @Value("${spring.redis.host}")
-    public Integer port;
     @Value("${spring.redis.port}")
+    public Integer port;
+    @Value("${spring.redis.host}")
     public String host;
 
     @Bean
